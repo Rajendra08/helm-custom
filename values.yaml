@@ -1,0 +1,96 @@
+auth:
+  # Enable Mutal TLS - TODO!
+  authentication:
+    enabled: false
+    provider: "jwt"
+  # Enable Authorization - TODO!
+  authorization:
+    enabled: false
+
+ingress:
+  proxy:
+    # Enable Proxy support to allow external clients to access Pulsar
+    enabled: true
+    # Enable TLS - TODO!
+    tls:
+      enabled: false
+    # Enable OpenStack support
+    annotations:
+       service.beta.kubernetes.io/openstack-internal-load-balancer: "true"
+
+broker:
+  configData:
+    # Enable Transaction support
+    PULSAR_PREFIX_transactionCoordinatorEnabled: "true"
+    PULSAR_PREFIX_acknowledgmentAtBatchIndexLevelEnabled: "true"
+    PULSAR_MEM: >
+      -Xms128m -Xmx256m -XX:MaxDirectMemorySize=256m
+    PULSAR_GC: >
+      -XX:+UseG1GC
+      -XX:MaxGCPauseMillis=10
+      -Dio.netty.leakDetectionLevel=disabled
+      -Dio.netty.recycler.linkCapacity=1024
+      -XX:+ParallelRefProcEnabled
+      -XX:+UnlockExperimentalVMOptions
+      -XX:+AggressiveOpts
+      -XX:+DoEscapeAnalysis
+      -XX:ParallelGCThreads=4
+      -XX:ConcGCThreads=4
+      -XX:G1NewSizePercent=50
+      -XX:+DisableExplicitGC
+      -XX:-ResizePLAB
+      -XX:+ExitOnOutOfMemoryError
+      -XX:+PerfDisableSharedMem
+
+proxy:
+  service:
+    # Enable OpenStack support
+    annotations:
+      service.beta.kubernetes.io/openstack-internal-load-balancer: "true"
+
+streamnative_console:
+  service:
+    # Enable OpenStack support
+    annotations:
+      service.beta.kubernetes.io/openstack-internal-load-balancer: "true"
+
+# upgrading to latest patch release
+# see https://hub.docker.com/r/streamnative/pulsar/tags
+images:
+  zookeeper:
+    tag: "2.9.2.2"
+    customTools:
+      backup:
+        tag: "2.9.2.2"
+      restore:
+        tag: "2.9.2.2"
+  bookie:
+    tag: "2.9.2.2"
+  presto:
+    tag: "2.9.2.2"
+  autorecovery:
+    tag: "2.9.2.2"
+  broker:
+    tag: "2.9.2.2"
+  proxy:
+    tag: "2.9.2.2"
+  pulsar_detector:
+    tag: "2.9.2.2"
+  functions:
+    tag: "2.9.2.2"
+  function_worker:
+    tag: "2.9.2.2"
+  toolset:
+    tag: "2.9.2.2"
+  pulsar_metadata:
+    tag: "2.9.2.2"
+zookeeper:
+  customTools:
+    backup:
+      tag: "2.9.2.2"
+    restore:
+      tag: "2.9.2.2"
+pulsar_metadata:
+  component: pulsar-init
+  image:
+    tag: "2.9.2.2"

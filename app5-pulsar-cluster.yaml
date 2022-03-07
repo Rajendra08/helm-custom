@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: pulsar-cluster
+  namespace: pulsar
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    name: ''
+    namespace: pulsar
+    server: 'https://kubernetes.default.svc'
+  source:
+    path: ''
+    repoURL: 'https://charts.streamnative.io'
+    targetRevision: 1.2.32
+    chart: sn-platform
+  project: default
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: false
